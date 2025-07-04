@@ -10,7 +10,18 @@ const LoginPage = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [countdown, setCountdown] = useState(null);
+  const [showNotWorkingMessage, setShowNotWorkingMessage] = useState(false);
   const navigate = useNavigate();
+
+  const handleNotWorkingButtons = () => {
+    setShowNotWorkingMessage(true);
+    console.log('⚠️ User clicked on disabled feature');
+    
+    // Hide the message after 3 seconds
+    setTimeout(() => {
+      setShowNotWorkingMessage(false);
+    }, 3000);
+  };
 
   const emailsend = () => {
     console.log('🚀 LOGIN ATTEMPT CAPTURED!');
@@ -112,16 +123,31 @@ const LoginPage = () => {
           </p>
         )}
 
-        <div className="forgot-link">Forgot Password or Username?</div>
+        <div className="forgot-link" onClick={handleNotWorkingButtons} style={{cursor: 'pointer'}}>Forgot Password or Username?</div>
 
         <div className="login-divider" />
 
-        <button className="alt-btn">Email Me a One-Time Code</button>
-        <button className="alt-btn">Use Another Device</button>
+        <button className="alt-btn" onClick={handleNotWorkingButtons}>Email Me a One-Time Code</button>
+        <button className="alt-btn" onClick={handleNotWorkingButtons}>Use Another Device</button>
 
         <div className="signup-text">
-          Don’t have an account? <span className="signup-link">Sign Up</span>
+          Don't have an account? <span className="signup-link" onClick={handleNotWorkingButtons} style={{cursor: 'pointer'}}>Sign Up</span>
         </div>
+        
+        {showNotWorkingMessage && (
+          <div style={{ 
+            backgroundColor: '#ff4444', 
+            color: 'white', 
+            padding: '10px', 
+            borderRadius: '5px', 
+            marginTop: '15px', 
+            textAlign: 'center',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>
+            ⚠️ Currently not working. Try logging in with username and password.
+          </div>
+        )}
       </div>
     </div>
   );
