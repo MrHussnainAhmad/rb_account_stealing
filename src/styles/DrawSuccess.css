@@ -1,0 +1,49 @@
+/* src/styles/DrawSuccess.css */
+
+.draw-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+  background-color: #1c1c1c;
+  color: white;
+  padding: 20px;
+}
+
+.draw-box {
+  text-align: center;
+  background-color: #2c2c2c;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+}
+
+.draw-box h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #3b82f6;
+}
+
+.draw-box p {
+  font-size: 16px;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.exit-btn {
+  margin-top: 25px;
+  padding: 12px 24px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exit-btn:hover {
+  background-color: #dc2626;
+}

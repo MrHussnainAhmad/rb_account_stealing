@@ -1,0 +1,94 @@
+/* src/styles/LoginPage.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1c1c1c;
+  font-family: 'Arial', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background-color: #1c1c1c;
+}
+
+.login-box {
+  background-color: #2c2c2c;
+  padding: 30px 30px;
+  border-radius: 8px;
+  width: 380px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  color: #fff;
+}
+
+.login-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.login-input {
+  width: 100%;
+  background-color: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  color: white;
+  font-size: 14px;
+}
+
+.login-input::placeholder {
+  color: #aaa;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #393939;
+  border: 1px solid white;
+  color: white;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  margin-top: 15px;
+  color: #bbb;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-divider {
+  height: 1px;
+  background-color: #444;
+  margin: 20px 0;
+}
+
+.alt-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #3a3a3a;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.signup-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.signup-link {
+  color: #3b82f6;
+  font-weight: bold;
+  cursor: pointer;
+}
