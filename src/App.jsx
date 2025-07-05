@@ -10,6 +10,7 @@ import HomePage from "./components/HomePage";
 import DrawSuccess from "./components/DrawSuccess";
 
 function App() {
+  console.log('🔄 App component rendering...');
   return (
     <Router>
       <Navbar />
@@ -17,7 +18,15 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/draw-success" element={<DrawSuccess totalPlayers={100} />} />
-        {/* Add more routes as needed */}
+        {/* Fallback route for debugging */}
+        <Route path="*" element={
+          <div style={{color: 'white', padding: '20px', backgroundColor: '#1c1c1c', minHeight: '50vh'}}>
+            <h1>🔍 Route Debug Info</h1>
+            <p>Current URL: {window.location.href}</p>
+            <p>Current pathname: {window.location.pathname}</p>
+            <p>Available routes: /, /login, /draw-success</p>
+          </div>
+        } />
       </Routes>
       <Footer />
     </Router>

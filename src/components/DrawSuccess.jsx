@@ -2,24 +2,34 @@
 import React, { useEffect, useState } from "react";
 import "../styles/DrawSuccess.css";
 
-const DrawSuccess = () => {
-  const [totalPlayers, setTotalPlayers] = useState(0);
-
-  useEffect(() => {
+const DrawSuccess = ({ totalPlayers: propTotalPlayers }) => {
+  console.log('🎯 DrawSuccess component is rendering!');
+  console.log('📊 Prop totalPlayers:', propTotalPlayers);
+  
+  const [totalPlayers, setTotalPlayers] = useState(() => {
+    // Initialize with calculated value to prevent loading glitch
     const min = 15000;
     const max = 20000;
-
     const lastStored = parseInt(localStorage.getItem("last_total_players")) || min;
-
-    // Generate a random number greater than lastStored
-    let next = lastStored;
-    while (next <= lastStored) {
+    
+    // Generate a random number greater than lastStored, with fallback
+    let next;
+    if (lastStored >= max) {
+      // If we've reached max, start fresh with a random number
       next = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      // Generate a number between lastStored+1 and max
+      const newMin = Math.min(lastStored + 1, max);
+      next = Math.floor(Math.random() * (max - newMin + 1)) + newMin;
     }
+    
+    return next;
+  });
 
-    setTotalPlayers(next);
-    localStorage.setItem("last_total_players", next);
-  }, []);
+  useEffect(() => {
+    // Store the initial value in localStorage
+    localStorage.setItem("last_total_players", totalPlayers);
+  }, [totalPlayers]);
 
   const handleExit = () => {
     // Method 1: Try to close the current tab/window
